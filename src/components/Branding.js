@@ -6,15 +6,22 @@ import Typography from 'material-ui/Typography';
 const Branding = ({
   mini,
   className,
+  subheading
 }) => (
   <hgroup className={className}>
-    <Typography type='title'>App Title</Typography>
+    <Typography type='title'>Rise Messaging</Typography>
+    {subheading &&
+      <Typography type='subheading'>
+        {subheading}
+      </Typography>
+    }
   </hgroup>
 );
 
 Branding.propTypes = {
   mini: PropTypes.bool,
   className: PropTypes.string,
+  subheading: PropTypes.string,
 };
 
 Branding.defaultProps = {

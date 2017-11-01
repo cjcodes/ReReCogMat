@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autoBind from 'react-autobind';
+import MaskedInput from 'react-text-mask';
 import { withStyles } from 'material-ui/styles';
 import {
   TextField,
+  Input,
   Button,
   Typography,
   CircularProgress,
@@ -19,6 +21,20 @@ const styles = {
     display: 'block',
   },
 };
+
+class PhoneInput extends Component {
+  render() {
+    return (
+      <MaskedInput
+        {...this.props}
+        mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', '-', ' ', /\d/, /\d/, /\d/, /\d/]}
+        placeholderChar={'\u2000'}
+        showMask
+      />
+    );
+  }
+}
+
 
 class Register extends Component {
   static propTypes = {
@@ -87,11 +103,12 @@ class Register extends Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <Input
               className={classes.field}
               onChange={this.handleChange}
-              label='Email'
-              name='email'
+              label='Mobile Number'
+              name='phone_number'
+              inputComponent={PhoneInput}
               fullWidth
             />
           </Grid>
@@ -99,8 +116,8 @@ class Register extends Component {
             <TextField
               className={classes.field}
               onChange={this.handleChange}
-              label='Mobile Number'
-              name='phone_number'
+              label='Email'
+              name='email'
               fullWidth
             />
           </Grid>

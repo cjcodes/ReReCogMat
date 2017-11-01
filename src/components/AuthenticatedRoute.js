@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Route as UnauthenticatedRoute } from 'react-router-dom';
 
-const Route = ({ component: Component, ...rest }) => {
+const AuthenticatedRoute = ({ component: Component, ...rest }) => {
   return (
     <UnauthenticatedRoute {...rest} render={props => (
       rest.user === null ? (
@@ -24,4 +24,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Route);
+export default connect(mapStateToProps)(AuthenticatedRoute);

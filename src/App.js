@@ -6,14 +6,12 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import {
-  Button,
-} from 'material-ui';
+import { validateAuth } from './modules/user';
 
-import { validateAuth, signOut } from './modules/user';
+import AuthenticatedRoute from './components/AuthenticatedRoute';
 
-import { Home, LoginRegister } from './scenes';
-import Route from './components/Route';
+import { LoginRegister } from './scenes';
+import Routes from './Routes';
 
 class App extends Component {
   componentWillMount() {
@@ -21,7 +19,7 @@ class App extends Component {
   }
 
   render() {
-    const { checkedAuth, signOut, user } = this.props;
+    const { checkedAuth } = this.props;
 
     if (!checkedAuth) {
       return (
@@ -30,15 +28,10 @@ class App extends Component {
     } else {
       return (
         <Router>
-          <div>
-            {user !== null &&
-              <Button onClick={signOut}>Log Out</Button>
-            }
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <UnauthenticatedRoute path="/login" component={LoginRegister} />
-            </Switch>
-          </div>
+          <Switch>
+            <UnauthenticatedRoute path="/login" component={LoginRegister} />
+            <AuthenticatedRoute path="/" component={Routes} />
+          </Switch>
         </Router>
       );
     }
@@ -48,13 +41,11 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     checkedAuth: state.user.checkedAuth,
-    user: state.user.user,
   };
 }
 
 const mapDispatchToProps = {
   validateAuth,
-  signOut,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

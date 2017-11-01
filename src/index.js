@@ -14,6 +14,7 @@ const store = configureStore();
 const secondary = colors.bluesky;
 
 const theme = createMuiTheme({
+  drawerWidth: 240,
   palette: {
     primary: colors.pine,
     secondary: {

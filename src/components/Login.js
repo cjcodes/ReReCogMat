@@ -81,6 +81,13 @@ class Login extends Component {
           loading: false,
         });
         break;
+      default:
+        this.setState({
+          errors: {
+            email: 'Something went wrong with this email address.',
+          },
+          loading: false,
+        });
     }
   }
 
