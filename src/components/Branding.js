@@ -9,7 +9,7 @@ const Branding = ({
   subheading
 }) => (
   <hgroup className={className}>
-    <Typography type='title'>Rise Messaging</Typography>
+    <Typography type='title'>React App</Typography>
     {subheading &&
       <Typography type='subheading'>
         {subheading}

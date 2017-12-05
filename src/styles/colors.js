@@ -1,5 +1,5 @@
 /* For use in material-ui/src/styles/colors.js */
-// http://mcg.mbitson.com/#!?bluesky=%2344b3f8&granite=%23b6b8b5&pine=%231f3f4a&fields=%23b3c300&themename=rise
+// http://mcg.mbitson.com/#!?bluesky=%2344b3f8&granite=%23b6b8b5&pine=%231f3f4a&fields=%23b3c300
 export const bluesky = {
     50: '#e9f6fe',
     100: '#c7e8fd',

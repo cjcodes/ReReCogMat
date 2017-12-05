@@ -6,7 +6,7 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import configureStore from './configureStore';
 import registerServiceWorker from './registerServiceWorker';
 import App from './App';
-import './styles/rise.css';
+import './styles/main.css';
 import * as colors from './styles/colors';
 
 const store = configureStore();
