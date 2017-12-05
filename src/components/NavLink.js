@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import Icon from 'material-ui/Icon';
 import { withStyles } from 'material-ui/styles';
 
 const styles = {
@@ -20,13 +21,11 @@ const NavLink = ({
   classes,
   exact,
 }) => {
-  const Icon = require('material-ui-icons/'+icon).default;
-
   return (
     <RouterNavLink to={to} className={classes.link} exact={exact}>
       <ListItem button>
         <ListItemIcon>
-          <Icon />
+          <Icon>{icon}</Icon>
         </ListItemIcon>
         <ListItemText primary={text} />
       </ListItem>

@@ -7,6 +7,7 @@ import {
   Toolbar,
   Typography,
   Button,
+  Paper,
 } from 'material-ui';
 
 import { signOut } from '../modules/user';
@@ -14,6 +15,7 @@ import { signOut } from '../modules/user';
 const styles = theme => ({
   root: {
     width: '100%',
+    backgroundColor: theme.palette.background.default,
   },
   appBar: {
     position: 'absolute',
@@ -24,9 +26,12 @@ const styles = theme => ({
     flex: 1,
   },
   content: {
-    backgroundColor: theme.palette.background.default,
-    width: '100%',
-    padding: theme.spacing.unit * 3,
+    width: 900,
+    margin: [0, 'auto'],
+    padding: [
+      theme.spacing.unit * 4,
+      theme.spacing.unit * 8,
+    ],
     height: 'calc(100% - 56px)',
     marginTop: 56,
     [theme.breakpoints.up('sm')]: {
@@ -34,14 +39,22 @@ const styles = theme => ({
       marginTop: 64,
     },
   },
+  fullwidth: {
+    width: '100%',
+  },
+  paper: {
+    minHeight: '100%',
+    padding: theme.spacing.unit * 3,
+  },
 });
 
 const Content = ({
   classes,
-  user,
   signOut,
   title,
   children,
+  authenticated,
+  fullwidth,
 }) => (
   <div className={classes.root}>
     <AppBar className={classes.appBar}>
@@ -49,20 +62,22 @@ const Content = ({
         <Typography type="title" color="inherit" noWrap className={classes.flex}>
           {title}
         </Typography>
-        {user !== null &&
+        {authenticated &&
           <Button onClick={signOut} color='accent'>Log Out</Button>
         }
       </Toolbar>
     </AppBar>
-    <main className={classes.content}>
-      {children}
+    <main className={`${classes.content} ${fullwidth ? classes.fullwidth : ''}`}>
+      <Paper className={classes.paper}>
+        {children}
+      </Paper>
     </main>
   </div>
 );
 
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  authenticated: PropTypes.bool.isRequired,
   signOut: PropTypes.func.isRequired,
   title: PropTypes.oneOfType([
     PropTypes.string,
@@ -73,7 +88,7 @@ Content.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    user: state.user.user,
+    authenticated: state.user.authenticated,
   };
 }
 

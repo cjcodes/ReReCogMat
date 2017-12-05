@@ -6,10 +6,10 @@ import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { withStyles } from 'material-ui/styles';
 
-import { authenticate, signUp } from '../modules/user';
-import SinglePageForm from '../components/SinglePageForm';
-import LoginComponent from '../components/Login';
-import RegisterComponent from '../components/Register';
+import { authenticate, signUp, submitCode } from '../../modules/user';
+import SinglePageForm from '../../components/SinglePageForm';
+import LoginComponent from './components/Login';
+import RegisterComponent from './components/Register';
 
 const styles = {
   form: {
@@ -35,7 +35,7 @@ class LoginRegister extends Component {
   };
 
   renderForms() {
-    const { classes, authenticate, error, signUp } = this.props;
+    const { classes, authenticate, error, signUp, submitCode, user } = this.props;
     const { tabIndex } = this.state;
 
     return (
@@ -50,7 +50,7 @@ class LoginRegister extends Component {
           <LoginComponent error={error} onSubmit={authenticate} className={classes.form} />
         }
         {tabIndex === 1 &&
-          <RegisterComponent error={error} onSubmit={signUp} className={classes.form} />
+          <RegisterComponent error={error} onSubmitForm={signUp} onSubmitCode={submitCode} registered={user !== null} className={classes.form} />
         }
       </SinglePageForm>
     );
@@ -65,9 +65,9 @@ class LoginRegister extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { authenticated } = this.props;
 
-    if (user.user === null) {
+    if (!authenticated) {
       return this.renderForms();
     } else {
       return this.redirect();
@@ -77,7 +77,8 @@ class LoginRegister extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user,
+    user: state.user.user,
+    authenticated: state.user.authenticated,
     error: state.user.error,
   };
 };
@@ -85,6 +86,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   authenticate,
   signUp,
+  submitCode,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginRegister));

@@ -38,26 +38,33 @@ class PhoneInput extends Component {
 
 class Register extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    onSubmitForm: PropTypes.func.isRequired,
+    onSubmitCode: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
+    registered: PropTypes.bool,
     className: PropTypes.string,
+  };
+
+  static defaultProps = {
+    registered: false,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: false,
+      loadingRegister: false,
+      loadingCode: false,
     };
 
     autoBind(this);
   }
 
-  submit(event) {
+  submitForm(event) {
     event.preventDefault();
 
     this.setState({
-      loading: true,
+      loadingRegister: true,
     });
 
     const {
@@ -68,7 +75,19 @@ class Register extends Component {
       phone_number,
     } = this.state;
 
-    this.props.onSubmit(email, password, given_name, family_name, phone_number);
+    this.props.onSubmitForm(email, password, given_name, family_name, phone_number);
+  }
+
+  submitCode(event) {
+    event.preventDefault();
+
+    this.setState({
+      loadingCode: true,
+    });
+
+    const { code, password } = this.state;
+
+    this.props.onSubmitCode(code, password);
   }
 
   handleChange = (event) => {
@@ -77,12 +96,12 @@ class Register extends Component {
     });
   }
 
-  render() {
-    const { loading } = this.state;
+  renderForm() {
+    const { loadingRegister } = this.state;
     const { classes, className } = this.props;
 
     return (
-      <form onSubmit={this.submit} className={className}>
+      <form onSubmit={this.submitForm} className={className}>
         <Grid container>
           <Grid item xs={6}>
             <TextField
@@ -138,14 +157,60 @@ class Register extends Component {
           color='primary'
           type='submit'
           raised
-          disabled={loading}>
-          { loading ?
+          disabled={loadingRegister}>
+          { loadingRegister ?
             <CircularProgress color='primary' size={14} /> :
             <Typography color='inherit'>Register</Typography>
           }
         </Button>
       </form>
     );
+  }
+
+  renderCode() {
+    const { loadingCode } = this.state;
+    const { classes, className } = this.props;
+
+    return (
+      <form onSubmit={this.submitCode} className={className}>
+        <Typography className={classes.field}>
+          Great! Check your email for a confirmation code to verify your email address.
+        </Typography>
+
+        <TextField
+          className={classes.field}
+          onChange={this.handleChange}
+          label='Confirmation Code'
+          name='code'
+          fullWidth
+        />
+
+        <Button
+          className={classes.button}
+          color='primary'
+          type='submit'
+          raised
+          disabled={loadingCode}>
+          { loadingCode ?
+            <CircularProgress color='primary' size={14} /> :
+            <Typography color='inherit'>Confirm</Typography>
+          }
+        </Button>
+      </form>
+    )
+  }
+
+  render() {
+    const { registered } = this.props;
+
+    return (
+      <div>
+        {registered
+          ? this.renderCode()
+          : this.renderForm()
+        }
+      </div>
+    )
   }
 }
 

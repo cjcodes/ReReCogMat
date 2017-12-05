@@ -7,11 +7,14 @@ export const AUTHENTICATE_SUCCESS = 'user/AUTHENTICATE_DONE';
 export const AUTHENTICATE_FAILURE = 'user/AUTHENTICATE_ERROR';
 export const VALIDATE = 'user/VALIDATE';
 export const VALIDATE_DONE = 'user/VALIDATE_DONE';
+export const SUBMIT_CODE = 'user/SUBMIT_CODE';
+export const CODE_CONFIRMED = 'user/CODE_CONFIRMED';
 
 const defaultState = {
   user: null,
   loading: true,
   checkedAuth: false,
+  authenticated: false,
 };
 
 export default (state = defaultState, action) => {
@@ -21,7 +24,9 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         user: null,
+        authenticated: false,
       };
+
     case VALIDATE_DONE:
       return {
         ...state,
@@ -63,6 +68,7 @@ export default (state = defaultState, action) => {
         user: action.user,
         attributes: action.attributes,
         loading: false,
+        authenticated: true,
       };
 
     case AUTHENTICATE_FAILURE:
@@ -100,4 +106,10 @@ export const authenticate = (email, password) => ({
 
 export const validateAuth = () => ({
   type: VALIDATE,
+});
+
+export const submitCode = (code, password) => ({
+  type: SUBMIT_CODE,
+  code,
+  password,
 });

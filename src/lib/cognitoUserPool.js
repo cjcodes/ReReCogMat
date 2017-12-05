@@ -23,6 +23,18 @@ export const signUp = (username, password, userAttributes, validationData) => {
   });
 };
 
+export const confirm = (user, code) => {
+  return new Promise((resolve, reject) => {
+    user.confirmRegistration(code, true, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 export const authenticate = (email, password) => {
   let user = pool.getCurrentUser();
   if (user === null) {

@@ -14,4 +14,8 @@ html, body {
   box-sizing: border-box;
 }
 
+textarea {
+  resize: none;
+}
+
 @import './NavLink';

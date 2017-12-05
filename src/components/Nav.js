@@ -46,8 +46,8 @@ const Nav = ({
       </div>
       <Divider />
       <List>
-        <NavLink to="/" text="Home" icon="Inbox" exact />
-        <NavLink to="/test" text="Test" icon="Send" />
+        <NavLink to="/" text="Home" icon="inbox" exact />
+        <NavLink to="/test" text="Test" icon="send" />
       </List>
       <Divider />
       <List>Item</List>

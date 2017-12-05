@@ -6,13 +6,13 @@ import { Route as UnauthenticatedRoute } from 'react-router-dom';
 const AuthenticatedRoute = ({ component: Component, ...rest }) => {
   return (
     <UnauthenticatedRoute {...rest} render={props => (
-      rest.user === null ? (
+      rest.authenticated ? (
+        <Component {...props} />
+      ) : (
         <Redirect to={{
           pathname: '/login',
           state: { from: props.location }
         }}/>
-      ) : (
-        <Component {...props} />
       )
     )} />
   );
@@ -20,7 +20,7 @@ const AuthenticatedRoute = ({ component: Component, ...rest }) => {
 
 const mapStateToProps = state => {
   return {
-    user: state.user.user,
+    authenticated: state.user.authenticated,
   };
 };
 

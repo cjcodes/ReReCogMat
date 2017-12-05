@@ -9,6 +9,7 @@ import {
   takeEvery,
   all,
   call,
+  select,
 } from 'redux-saga/effects';
 
 import {
@@ -17,6 +18,7 @@ import {
   getAttributes as cognitoGetAttributes,
   validateAuth as cognitoValidateAuth,
   signOut as cognitoSignOut,
+  confirm as cognitoConfirm,
 } from '../lib/cognitoUserPool';
 
 import {
@@ -29,6 +31,7 @@ import {
   AUTHENTICATE_SUCCESS,
   VALIDATE,
   VALIDATE_DONE,
+  SUBMIT_CODE,
 } from '../modules/user';
 
 function* signUp(action) {
@@ -54,6 +57,26 @@ function* signUp(action) {
   } catch (e) {
     yield put({
       type: SIGN_UP_ERROR,
+      error: e,
+    });
+  }
+}
+
+export const getUser = (state) => state.user.user;
+
+function* confirm(action) {
+  const { code, password } = action;
+  const user = yield select(getUser);
+
+  try {
+    yield cognitoConfirm(user, code);
+    yield call(authenticate, {
+      email: user.username,
+      password,
+    });
+  } catch (e) {
+    yield put({
+      type: AUTHENTICATE_FAILURE,
       error: e,
     });
   }
@@ -110,6 +133,10 @@ function* watchSignUp() {
   yield takeEvery(SIGN_UP, signUp);
 }
 
+function* watchConfirm() {
+  yield takeEvery(SUBMIT_CODE, confirm);
+}
+
 function* watchAuthenticate() {
   yield takeEvery(AUTHENTICATE_REQUEST, authenticate);
 }
@@ -125,6 +152,7 @@ function* watchSignOut() {
 export default function* cognito() {
   yield all([
     watchSignUp(),
+    watchConfirm(),
     watchAuthenticate(),
     watchValidate(),
     watchSignOut(),
